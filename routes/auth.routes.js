@@ -23,7 +23,7 @@ router.post("/", async (req, res) => {
 
     const user = await User.findOne({ email: req.body.email });
     if (!user) {
-      return res.status(401).send({ msg: "Invalid Email" });
+      return res.status(401).send({ msg: "El correo no ha sido registrado" });
     }
 
     const validPassword = await bcrypt.compare(
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
     );
 
     if (!validPassword) {
-      return res.status(401).send({ msg: "Invalid Password" });
+      return res.status(401).send({ msg: "Contraseña Incorrecta" });
     }
 
     const token = user.generateAuthToken(user.id);

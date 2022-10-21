@@ -21,7 +21,41 @@ router.post("/", async (req, res) => {
     const { error } = validate(req.body);
 
     if (error) {
-      return res.status(400).send({ msg: error.details[0].message });
+      if (
+        error.details[0].message ===
+        '"Password" should be at least 8 characters long'
+      ) {
+        return res
+          .status(400)
+          .send({ msg: "La contraseña debe contener 8 caracteres" });
+      }
+
+      if (
+        error.details[0].message ===
+        '"Password" should contain at least 1 lower-cased letter'
+      ) {
+        return res
+          .status(400)
+          .send({ msg: "La contraseña debe contener una letra minúscula" });
+      }
+
+      if (
+        error.details[0].message ===
+        '"Password" should contain at least 1 upper-cased letter'
+      ) {
+        return res
+          .status(400)
+          .send({ msg: "La contraseña debe contener una letra mayúscula" });
+      }
+
+      if (
+        error.details[0].message ===
+        '"Password" should contain at least 1 symbol'
+      ) {
+        return res
+          .status(400)
+          .send({ msg: "La contraseña debe contener un símbolo" });
+      }
     }
 
     const user = await User.findOne({ email: req.body.email });
