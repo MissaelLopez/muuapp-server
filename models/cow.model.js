@@ -7,6 +7,7 @@ const pesoSchema = mongoose.Schema(
     nacer: { type: String, required: false, default: 0 },
     destetar: { type: String, required: false, default: 0 },
     unAnio: { type: String, required: false, default: 0 },
+    actual: { type: String, required: false, default: 0 },
   },
   { _id: false }
 );
@@ -30,6 +31,14 @@ const CowSchema = new mongoose.Schema({
   peso: pesoSchema,
   padres: padresSchema,
   pesos: [{ fecha: Date, peso: String, descripcion: String, _id: false }],
+  leche: [
+    {
+      fecha: Date,
+      ltsManiana: String,
+      ltsTarde: String,
+      _id: false,
+    },
+  ],
   ranch: { type: ObjectId, ref: "ranch", required: true },
 });
 

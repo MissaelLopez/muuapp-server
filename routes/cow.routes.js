@@ -62,6 +62,21 @@ router.post("/weight", methods.ensureToken, async (req, res) => {
   }
 });
 
+router.post("/milk", methods.ensureToken, async (req, res) => {
+  try {
+    const cow = await Cow.findById(req.body.id);
+    cow.leche.push({
+      fecha: req.body.fecha,
+      ltsManiana: req.body.ltsManiana,
+      ltsTarde: req.body.ltsTarde,
+    });
+    await cow.save();
+    res.status(200).send({ msg: "Lts of milk added successfully" });
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+});
+
 router.delete("/:id", methods.ensureToken, async (req, res) => {
   try {
     await Cow.findByIdAndDelete(req.params.id);
