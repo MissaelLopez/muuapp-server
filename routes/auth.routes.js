@@ -46,15 +46,16 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/send-email", async (req, res) => {
-  const user = await User.findOne({ email: req.body.email });
-  const data = { email: user.email, name: user.fullname };
-  const encodeData = btoa(JSON.stringify(data));
+  try {
+    const user = await User.findOne({ email: req.body.email });
+    const data = { email: user.email, name: user.fullname };
+    const encodeData = btoa(JSON.stringify(data));
 
-  const mailData = {
-    from: "MuuApp",
-    to: req.body.email,
-    subject: "Sending Email using NodeJS",
-    html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+    const mailData = {
+      from: "MuuApp",
+      to: req.body.email,
+      subject: "Sending Email using NodeJS",
+      html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
     <html
       xmlns="http://www.w3.org/1999/xhtml"
       xmlns:v="urn:schemas-microsoft-com:vml"
@@ -1022,15 +1023,18 @@ router.post("/send-email", async (req, res) => {
       </body>
     </html>
     `,
-  };
+    };
 
-  transporter.sendMail(mailData, (error, info) => {
-    if (error) {
-      console.log(error);
-      res.status(500).send({ msg: "Internal server error" });
-    }
-    res.status(200).send({ msg: "Mail send", messageId: info.messageId });
-  });
+    transporter.sendMail(mailData, (error, info) => {
+      if (error) {
+        console.log(error);
+        res.status(500).send({ msg: "Internal server error" });
+      }
+      res.status(200).send({ msg: "Mail send", messageId: info.messageId });
+    });
+  } catch (error) {
+    res.status(500).send({ msg: "El correo no ha sido registrado" });
+  }
 });
 
 const validate = (data) => {
