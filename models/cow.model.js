@@ -39,6 +39,12 @@ const CowSchema = new mongoose.Schema({
       _id: false,
     },
   ],
+  tratamientos: [
+    { fecha: Date, diagnostico: String, medicamento: String, dias: String, _id: false, },
+  ],
+  vacunas: [
+    { fecha: Date, enfermedad: String, vacuna: String, dosis: String, _id: false, },
+  ],
   ranch: { type: ObjectId, ref: "ranch", required: true },
 });
 

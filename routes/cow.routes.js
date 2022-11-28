@@ -77,6 +77,38 @@ router.post("/milk", methods.ensureToken, async (req, res) => {
   }
 });
 
+router.post("/treatments", methods.ensureToken, async (req, res) => {
+  try {
+    const cow = await Cow.findById(req.body.id);
+    cow.tratamientos.push({
+      fecha: req.body.fecha,
+      diagnostico: req.body.diagnostico,
+      medicamento: req.body.medicamento,
+      dias: req.body.dias,
+    });
+    await cow.save();
+    res.status(200).send({ msg: "Treatment added successfully" });
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+});
+
+router.post("/vaccinations", methods.ensureToken, async (req, res) => {
+  try {
+    const cow = await Cow.findById(req.body.id);
+    cow.vacunas.push({
+      fecha: req.body.fecha,
+      enfermedad: req.body.enfermedad,
+      vacuna: req.body.vacuna,
+      dosis: req.body.dosis,
+    });
+    await cow.save();
+    res.status(200).send({ msg: "Vaccination added successfully" });
+  } catch (error) {
+    res.status(500).send({ msg: error.message });
+  }
+});
+
 router.delete("/:id", methods.ensureToken, async (req, res) => {
   try {
     await Cow.findByIdAndDelete(req.params.id);
